@@ -5,7 +5,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 script {
-                    git 'https://github.com/yourusername/yourrepository.git'
+                    git 'https://github.com/batsy101/jd_cicd.git'
                 }
             }
         }
@@ -14,10 +14,10 @@ pipeline {
             steps {
                 script {
                     // Build Docker image using Dockerfile in the repository root
-                    def customImage = docker.build('my-custom-docker-image', '.')
+                    def customImage = docker.build('nginx-webapp', '.')
                     
                     // Tag the image if needed
-                    customImage.tag('my-custom-docker-image:latest')
+                    customImage.tag('nginx-webapp:latest')
                 }
             }
         }
@@ -26,7 +26,7 @@ pipeline {
             steps {
                 script {
                     // Run the Docker container using the custom image
-                    docker.image('my-custom-docker-image:latest').run('-d -p 8080:80')
+                    docker.image('nginx-webapp:latest').run('-d -p 80:80')
                 }
             }
         }
