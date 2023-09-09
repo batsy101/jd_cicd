@@ -1,0 +1,34 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                script {
+                    git 'https://github.com/yourusername/yourrepository.git'
+                }
+            }
+        }
+        
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    // Build Docker image using Dockerfile in the repository root
+                    def customImage = docker.build('my-custom-docker-image', '.')
+                    
+                    // Tag the image if needed
+                    customImage.tag('my-custom-docker-image:latest')
+                }
+            }
+        }
+        
+        stage('Run Docker Container') {
+            steps {
+                script {
+                    // Run the Docker container using the custom image
+                    docker.image('my-custom-docker-image:latest').run('-d -p 8080:80')
+                }
+            }
+        }
+    }
+}
